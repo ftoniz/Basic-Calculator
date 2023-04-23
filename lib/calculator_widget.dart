@@ -15,15 +15,86 @@ class CalculatorWidget extends HookWidget {
         ),
       );
 
-  Widget commandButton({
-    required VoidCallback onPressed,
+  Widget _clearButton({
+    required String text,
+    required Calculator calculator,
+    required ValueNotifier<String> result,
+    int weight = 1,
+  }) =>
+      Expanded(
+        flex: weight,
+        child: MaterialButton(
+          onPressed: () {
+            calculator.clear();
+            result.value = '0';
+          },
+          color: Colors.white38,
+          key: ValueKey(text),
+          child: Text(
+            text,
+            style: const TextStyle(
+              fontSize: 20,
+            ),
+          ),
+        ),
+      );
+
+  Widget _calculatingButton({
+    required String text,
+    required Calculator calculator,
+    required ValueNotifier<String> result,
+    int weight = 1,
+  }) =>
+      Expanded(
+        flex: weight,
+        child: MaterialButton(
+          onPressed: () {
+            result.value = calculator.getResult();
+          },
+          color: Colors.white38,
+          key: ValueKey(text),
+          child: Text(
+            text,
+            style: const TextStyle(
+              fontSize: 20,
+            ),
+          ),
+        ),
+      );
+
+  Widget _mockupButton({
     required String text,
     int weight = 1,
   }) =>
       Expanded(
         flex: weight,
         child: MaterialButton(
-          onPressed: onPressed,
+          onPressed: () {},
+          color: Colors.white38,
+          key: ValueKey(text),
+          child: Text(
+            text,
+            style: const TextStyle(
+              fontSize: 20,
+            ),
+          ),
+        ),
+      );
+
+  Widget _commandButton({
+    required String text,
+    required Calculator calculator,
+    required ValueNotifier<String> result,
+    String? commandText,
+    int weight = 1,
+  }) =>
+      Expanded(
+        flex: weight,
+        child: MaterialButton(
+          onPressed: () {
+            calculator.add(commandText ?? text);
+            result.value = calculator.getDigit();
+          },
           color: Colors.white38,
           key: ValueKey(text),
           child: Text(
@@ -70,15 +141,6 @@ class CalculatorWidget extends HookWidget {
     ];
   }
 
-  void _addMathProblem({
-    required String char,
-    required Calculator calculator,
-    required ValueNotifier<String> result,
-  }) {
-    calculator.add(char);
-    result.value = calculator.getDigit();
-  }
-
   @override
   Widget build(BuildContext context) {
     var result = useState<String>('0');
@@ -100,196 +162,106 @@ class CalculatorWidget extends HookWidget {
             ),
             commandRow(
               children: [
-                commandButton(
-                  onPressed: () {
-                    calculator.clear();
-                    result.value = '0';
-                  },
+                _clearButton(
                   text: 'C',
+                  calculator: calculator,
+                  result: result,
                   weight: 2,
                 ),
-                commandButton(
-                  onPressed: () {
-                    _addMathProblem(
-                      char: '%',
-                      calculator: calculator,
-                      result: result,
-                    );
-                  },
-                  text: '%',
-                ),
-                commandButton(
-                  onPressed: () {
-                    _addMathProblem(
-                      char: '/',
-                      calculator: calculator,
-                      result: result,
-                    );
-                  },
+                _mockupButton(text: '%'),
+                _commandButton(
                   text: '/',
+                  calculator: calculator,
+                  result: result,
                 ),
               ],
             ),
             commandRow(
               children: [
-                commandButton(
-                  onPressed: () {
-                    _addMathProblem(
-                      char: '7',
-                      calculator: calculator,
-                      result: result,
-                    );
-                  },
+                _commandButton(
                   text: '7',
+                  calculator: calculator,
+                  result: result,
                 ),
-                commandButton(
-                  onPressed: () {
-                    _addMathProblem(
-                      char: '8',
-                      calculator: calculator,
-                      result: result,
-                    );
-                  },
+                _commandButton(
                   text: '8',
+                  calculator: calculator,
+                  result: result,
                 ),
-                commandButton(
-                  onPressed: () {
-                    _addMathProblem(
-                      char: '9',
-                      calculator: calculator,
-                      result: result,
-                    );
-                  },
+                _commandButton(
                   text: '9',
+                  calculator: calculator,
+                  result: result,
                 ),
-                commandButton(
-                  onPressed: () {
-                    _addMathProblem(
-                      char: '*',
-                      calculator: calculator,
-                      result: result,
-                    );
-                  },
+                _commandButton(
                   text: 'X',
+                  commandText: '*',
+                  calculator: calculator,
+                  result: result,
                 ),
               ],
             ),
             commandRow(
               children: [
-                commandButton(
-                  onPressed: () {
-                    _addMathProblem(
-                      char: '4',
-                      calculator: calculator,
-                      result: result,
-                    );
-                  },
+                _commandButton(
                   text: '4',
+                  calculator: calculator,
+                  result: result,
                 ),
-                commandButton(
-                  onPressed: () {
-                    _addMathProblem(
-                      char: '5',
-                      calculator: calculator,
-                      result: result,
-                    );
-                  },
+                _commandButton(
                   text: '5',
+                  calculator: calculator,
+                  result: result,
                 ),
-                commandButton(
-                  onPressed: () {
-                    _addMathProblem(
-                      char: '6',
-                      calculator: calculator,
-                      result: result,
-                    );
-                  },
+                _commandButton(
                   text: '6',
+                  calculator: calculator,
+                  result: result,
                 ),
-                commandButton(
-                  onPressed: () {
-                    _addMathProblem(
-                      char: '-',
-                      calculator: calculator,
-                      result: result,
-                    );
-                  },
+                _commandButton(
                   text: '-',
+                  calculator: calculator,
+                  result: result,
                 ),
               ],
             ),
             commandRow(
               children: [
-                commandButton(
-                  onPressed: () {
-                    _addMathProblem(
-                      char: '1',
-                      calculator: calculator,
-                      result: result,
-                    );
-                  },
+                _commandButton(
                   text: '1',
+                  calculator: calculator,
+                  result: result,
                 ),
-                commandButton(
-                  onPressed: () {
-                    _addMathProblem(
-                      char: '2',
-                      calculator: calculator,
-                      result: result,
-                    );
-                  },
+                _commandButton(
                   text: '2',
+                  calculator: calculator,
+                  result: result,
                 ),
-                commandButton(
-                  onPressed: () {
-                    _addMathProblem(
-                      char: '3',
-                      calculator: calculator,
-                      result: result,
-                    );
-                  },
+                _commandButton(
                   text: '3',
+                  calculator: calculator,
+                  result: result,
                 ),
-                commandButton(
-                  onPressed: () {
-                    _addMathProblem(
-                      char: '+',
-                      calculator: calculator,
-                      result: result,
-                    );
-                  },
+                _commandButton(
                   text: '+',
+                  calculator: calculator,
+                  result: result,
                 ),
               ],
             ),
             commandRow(
               children: [
-                commandButton(
-                  onPressed: () {
-                    _addMathProblem(
-                      char: '0',
-                      calculator: calculator,
-                      result: result,
-                    );
-                  },
+                _commandButton(
                   text: '0',
+                  calculator: calculator,
+                  result: result,
                   weight: 2,
                 ),
-                commandButton(
-                  onPressed: () {
-                    _addMathProblem(
-                      char: '.',
-                      calculator: calculator,
-                      result: result,
-                    );
-                  },
-                  text: '.',
-                ),
-                commandButton(
-                  onPressed: () {
-                    result.value = calculator.getResult();
-                  },
+                _mockupButton(text: '.'),
+                _calculatingButton(
                   text: '=',
+                  calculator: calculator,
+                  result: result,
                 ),
               ],
             ),
